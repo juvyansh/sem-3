@@ -1,28 +1,32 @@
-const http = require("http");
+const express = require("express");
 
-const server = http.createServer((req, res) => {
+const app = express();
+const PORT = 3000;
 
-    if (req.method === "GET" && req.url === "/users") {
-    res.writeHead(200, { "Content-Type": "text/plain" });
-    res.end("GET: Fetching users");
-}
+// Middleware to read JSON data
+app.use(express.json());
 
-else if (req.method === "POST" && req.url === "/users") {
-    res.writeHead(201, { "Content-Type": "text/plain" });
-    res.end("POST: Creating a new user");
-}
-
-else if (req.method === "PUT" && req.url === "/users") {
-    res.writeHead(200, { "Content-Type": "text/plain" });
-    res.end("PUT: Updating user");
-}
-
-else if (req.method === "DELETE" && req.url === "/users") {
-    res.writeHead(200, { "Content-Type": "text/plain" });
-    res.end("DELETE: Deleting user");
-}
+// GET - Fetch data
+app.get("/users", (req, res) => {
+    res.send("GET: Fetching all users");
 });
 
-server.listen(3001, () => {
-    console.log("Server running at http://localhost:3001");
+// POST - Add new data
+app.post("/users", (req, res) => {
+    res.send("POST: User added successfully");
+});
+
+// PUT - Update data
+app.put("/users/:id", (req, res) => {
+    res.send(`PUT: User with ID ${req.params.id} updated`);
+});
+
+// DELETE - Delete data
+app.delete("/users/:id", (req, res) => {
+    res.send(`DELETE: User with ID ${req.params.id} deleted`);
+});
+
+// Start server
+app.listen(PORT, () => {
+    console.log(`Server running at http://localhost:${PORT}`);
 });
